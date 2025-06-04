@@ -3,22 +3,22 @@ from gestor_dispositivos import agregar_dispositivo, mostrar_dispositivos, busca
 
 
 def menu():
-    print("Menu:")
-    print("1:Registrar dispositivo:")
-    print("2:Mostrar dispositivos:")
-    print("3:Buscar dispositivo:")
-    print("4:Automatizar dispositivo:")
-    print("5:Eliminar automatizacion")
-    print("6:Desconectar dispositivo:")
-    print("7:Mostrar Automatizacion:")
-    print("8:Salir:")
+    print("Menu:\n"
+          "1: Registrar dispositivo\n"
+          "2: Mostrar dispositivos\n"
+          "3: Buscar dispositivo\n"
+          "4: Automatizar dispositivo\n"
+          "5: Eliminar automatizacion\n"
+          "6: Desconectar dispositivo\n"
+          "7: Mostrar Automatizacion\n"
+          "8: Salir")
 
 
 aplicacion_ejecutando = True
 
 while aplicacion_ejecutando:
 
-    print()
+    print("\n")
     menu()
     print()
 
