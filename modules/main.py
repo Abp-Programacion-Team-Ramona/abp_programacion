@@ -2,16 +2,14 @@ from gestor_dispositivos import agregar_dispositivo, mostrar_dispositivos, busca
     automatizar_dispositivo, eliminar_automatizacion, eliminar_dispositivo, mostrar_automatizaciones
 
 
-def menu():
-    print("Menu:\n"
-          "1: Registrar dispositivo\n"
+def menu_usuario_estandar():
+    print("Opciones:\n"
+          "1: Ver informacion de usuario\n"
           "2: Mostrar dispositivos\n"
-          "3: Buscar dispositivo\n"
+          "3: Buscar dispositivo por nombre\n"
           "4: Automatizar dispositivo\n"
-          "5: Eliminar automatizacion\n"
-          "6: Desconectar dispositivo\n"
-          "7: Mostrar Automatizacion\n"
-          "8: Salir")
+          "5: Desactivar automatizacion\n"
+          "7: Salir")
 
 
 aplicacion_ejecutando = True
@@ -19,7 +17,7 @@ aplicacion_ejecutando = True
 while aplicacion_ejecutando:
 
     print("\n")
-    menu()
+    menu_usuario_estandar()
     print("\n")
 
     opcion = input("Elija una opcion:")
