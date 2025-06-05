@@ -8,23 +8,32 @@ MODOS_AC = ("VENTILADOR", "FRIO", "CALOR", "HUMEDAD")
 
 
 def automatizar_dispositivo():
-    tipo = int(input(
-        "¿Que tipo de dispositivo es?: "
-        "1) Aire acondicionado. "
-        "2) Ventilador (Pie, Techo). "
-        "3) Encendible (Luces, Computadores personales, cafeteras): "))
-    if 0 < tipo <= 3:
-        if tipo == 1:
-            automatizar_aire_acondicionado()
-        if tipo == 2:
-            automatizar_ventilador()
-        if tipo == 3:
-            automatizar_encendido_apagado()
+    tipo_input = input(
+        "¿Qué tipo de dispositivo es?\n"
+        "1) Aire acondicionado\n"
+        "2) Ventilador (Pie, Techo)\n"
+        "3) Encendible (Luces, Computadoras, Cafeteras)\n"
+        "Seleccione una opción: "
+    )
+
+    nombre_rutina = input("Indique el identificador de la rutina:")
+
+    if tipo_input.isdigit():
+        tipo = int(tipo_input)
+        match tipo:
+            case 1:
+                automatizar_aire_acondicionado(nombre_rutina)
+            case 2:
+                automatizar_ventilador(nombre_rutina)
+            case 3:
+                automatizar_encendido_apagado(nombre_rutina)
+            case _:
+                print("Opción invalida.")
     else:
-        print("Opcion invalida")
+        print("Solo se aceptan valores numericos.")
 
 
-def automatizar_encendido_apagado():
+def automatizar_encendido_apagado(nombre_rutina):
     arranque = ""
     apagado = ""
     texto_estado = "ENCENDIDO"
@@ -35,7 +44,7 @@ def automatizar_encendido_apagado():
         print("No existen dispositivos del tipo.")
         return False
 
-    identificador = int(input("Indique que dispositivo quiere automatizar: "))
+    nombre_dispositivo = buscar_dispositivo_por_identificador()
 
     print("Indique un horario de inicio de la rutina:")
     inicio = input()
@@ -69,7 +78,8 @@ def automatizar_encendido_apagado():
         "Si el dispositivo tiene modo nocturno y desea activarlo al iniciar la rutina indiquelo: ( ENCENDIDO (Y) / APAGADO (X) ) ")
     modo_nocturno = str.upper(modo_nocturno_input) == "Y"
 
-    automatizaciones[identificador] = {
+    automatizaciones[nombre_rutina] = {
+        "Dispositivo": nombre_dispositivo,
         "Horario de inicio de la rutina": inicio,
         "Estado del dispositivo": texto_estado,
         "Horario arranque de dispositivo": arranque,
@@ -82,7 +92,7 @@ def automatizar_encendido_apagado():
     return True
 
 
-def automatizar_aire_acondicionado():
+def automatizar_aire_acondicionado(nombre_rutina):
     arranque = ""
     apagado = ""
     velocidad = 0
@@ -94,7 +104,8 @@ def automatizar_aire_acondicionado():
     else:
         print("No existen dispositivos del tipo.")
         return False
-    identificador = int(input("Indique que dispositivo quiere automatizar: "))
+
+    nombre_dispositivo = buscar_dispositivo_por_identificador()
 
     print("Indique un horario de inicio de la rutina:")
     inicio = input()
@@ -142,7 +153,8 @@ def automatizar_aire_acondicionado():
                 print("Ingrese una temperatura entre 15-38 (Celcius): ")
                 temperatura = int(input())
 
-    automatizaciones[identificador] = {
+    automatizaciones[nombre_rutina] = {
+        "Dispositivo": nombre_dispositivo,
         "Horario de inicio de la rutina": inicio,
         "Estado del dispositivo": texto_estado,
         "Horario arranque de dispositivo": arranque,
@@ -155,7 +167,7 @@ def automatizar_aire_acondicionado():
     return True
 
 
-def automatizar_ventilador():
+def automatizar_ventilador(nombre_rutina):
     arranque = ""
     apagado = ""
     velocidad = 0
@@ -166,7 +178,8 @@ def automatizar_ventilador():
     else:
         print("No existen dispositivos del tipo.")
         return False
-    identificador = int(input("Indique que dispositivo quiere automatizar: "))
+
+    nombre_dispositivo = buscar_dispositivo_por_identificador()
 
     print("Indique un horario de inicio de la rutina:")
     inicio = input()
@@ -199,7 +212,8 @@ def automatizar_ventilador():
             "Si desea agregar un horario de apagado indiquelo a continuacion. De lo contrario deje vacio el espacio.")
         apagado = input()
 
-    automatizaciones[identificador] = {
+    automatizaciones[nombre_rutina] = {
+        "Dispositivo": nombre_dispositivo,
         "Horario de inicio de la rutina": inicio,
         "Estado del dispositivo": texto_estado,
         "Horario arranque de dispositivo": arranque,
@@ -212,32 +226,40 @@ def automatizar_ventilador():
 
 
 def agregar_dispositivo():
-    nombre = input("Indique el nombre del dispositivo: ")
-    tipo = int(input(
-        "¿Que tipo de dispositivo es?: "
-        "1) Aire acondicionado. "
-        "2) Ventilador (Pie, Techo). "
-        "3) Encendible (Luces, Computadores personales, cafeteras): "))
-    tipo_dispositivo = ""
-    if 0 < tipo <= 3:
-        if tipo == 1:
-            tipo_dispositivo = "AIRE_ACONDICIONADO"
-        if tipo == 2:
-            tipo_dispositivo = "VENTILADOR"
-        if tipo == 3:
-            tipo_dispositivo = "ENCENDIBLES"
-    else:
-        print("Opcion invalida")
-    if check_dispositivo_existe_por_nombre(str.upper(nombre)) or len(nombre) < 1:
-        print("El dispositivo ya existe o el valor ingresado como nombre es invalido")
-        return False
-    else:
-        dispositivo = {
-            "Nombre": str.upper(nombre),
-            "Estado": "Encendido",
-            "Tipo": tipo_dispositivo
-        }
-        dispositivos[len(dispositivos) + 1] = dispositivo
+    while True:
+        opcion = input(
+            "¿Que tipo de dispositivo es?: "
+            "1) Aire acondicionado. "
+            "2) Ventilador (Pie, Techo). "
+            "3) Encendible (Luces, Computadores personales, cafeteras): ")
+        if opcion.isdigit():
+            tipo = int(opcion)
+            if 0 < tipo <= 3:
+                match tipo:
+                    case 1:
+                        tipo_dispositivo = "AIRE_ACONDICIONADO"
+                        break
+                    case 2:
+                        tipo_dispositivo = "VENTILADOR"
+                        break
+                    case 3:
+                        tipo_dispositivo = "ENCENDIBLES"
+                        break
+            else:
+                print("Opcion invalida")
+
+    while True:
+        nombre = input("Indique el nombre del dispositivo: ")
+        if check_dispositivo_existe_por_nombre(str.upper(nombre)) or len(nombre) < 1:
+            print("El dispositivo ya existe o el valor ingresado como nombre es invalido. Intente nuevamente")
+        else:
+            dispositivo = {
+                "Nombre": str.upper(nombre),
+                "Estado": "Encendido",
+                "Tipo": tipo_dispositivo
+            }
+            dispositivos[len(dispositivos) + 1] = dispositivo
+            break
     print(f"El dispositivo {nombre} fue registrado correctamente.")
 
 
@@ -259,18 +281,30 @@ def mostrar_dispositivos():
 
 
 def buscar_dispositivo_por_nombre():
-    nombre = input("Indique el nombre del dispositivo: ")
-    encontrado = False
+    nombre = input("Indique el nombre del dispositivo: ").strip().upper()
+
     for id_disp, disp in dispositivos.items():
-        if disp['Nombre'] == str.upper(nombre):
+        if disp['Nombre'] == nombre:
             print(f"Identificador del dispositivo: {id_disp}. "
                   f"Nombre:{disp['Nombre']}. "
                   f"Estado:{disp['Estado']}. "
                   f"Tipo:{disp['Tipo']}.")
-            encontrado = True
-            break
-    if not encontrado:
-        print("No se encontro el dispositivo")
+            return
+    print("No se encontro el dispositivo.")
+
+
+def buscar_dispositivo_por_identificador():
+    numero = int(input("Indique el numero de identificacion de dispositivo que quiere automatizar: "))
+
+    dispositivo = dispositivos.get(numero)
+
+    if dispositivo:
+        nombre_dispositivo = dispositivo["Nombre"]
+        print(f"Dispositivo seleccionado: {nombre_dispositivo}")
+        return nombre_dispositivo
+    else:
+        print("No existe un dispositivo con ese número.")
+        return False
 
 
 def mostrar_dispositivos_por_tipo(tipo):
@@ -298,25 +332,24 @@ def eliminar_dispositivo():
 
 
 def mostrar_automatizaciones():
-    if len(automatizaciones) == 0:
-        print("No hay automatizaciones")
-    for key, values in automatizaciones.items():
-        print(f"Automatizacion del dispositivo:{key}.")
-        for automatizacion, atributo in values.items():
-            print(f"{automatizacion}:{atributo}")
+    if not automatizaciones:
+        print("No hay automatizaciones creadas.")
+        return
+
+    for nombre_rutina, datos in automatizaciones.items():
+        print(f"Nombre de la rutina: {nombre_rutina}")
+        for clave, valor in datos.items():
+            print(f"  {clave}: {valor}")
 
 
 def eliminar_automatizacion():
-    mostrar_dispositivos()
-    identificador = int(input("Ingrese el Identificador del dispositivo cuya rutina desea eliminar: "))
-    if not identificador > len(dispositivos) or identificador <= 0:
-        if identificador in automatizaciones:
-            automatizaciones.pop(identificador)
-            print("Rutina eliminada.")
-        else:
-            print("No existe rutina para el dispositivo")
+    mostrar_automatizaciones()
+    nombre = input("Indique el nombre de la automatizacion que desea eliminar")
+    if nombre in automatizaciones:
+        automatizaciones.pop(nombre)
+        print(f"Automatización '{nombre}' eliminada.")
     else:
-        print("Valor invalido.")
+        print(f"No se encontro una automatización con el nombre '{nombre}'.")
 
 
 if __name__ == "__main__":
