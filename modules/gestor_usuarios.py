@@ -44,3 +44,29 @@ def registrar_administrador():
             print("Reintentando registrar administrador...\n")
         else:
             print("Opción inválida. Solo se aceptan los valores (X) e (Y)\n")
+
+def registrar_usuario_standar():
+
+    print("Registro de usuario nuevo.")
+
+    while True:
+        nombre = input("Ingrese un nombre de usuario: ")
+        password = input("Ingrese la contraseña: ")
+        correo = input("Ingrese un correo electronico: ")
+
+        print(f"Los datos serán: \n"
+              f"Usuario: {nombre}\n"
+              f"Contraseña: {password}\n"
+              f"Correo: {correo}\n")
+        check = input("Confirme por favor: Si (Y) / No (X): ")
+
+        if check.upper() == "Y":
+
+             usuarios_db[nombre] = {
+                "contraseña": password,
+                "Rol": "USUARIO",
+                "Correo": correo
+            }
+             print("Usuario registrado con éxito.")
+             return
+        
