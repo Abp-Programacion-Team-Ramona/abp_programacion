@@ -2,6 +2,7 @@ from gestor_dispositivos import agregar_dispositivo, mostrar_dispositivos, busca
     automatizar_dispositivo, eliminar_automatizacion, eliminar_dispositivo, mostrar_automatizaciones
 
 from gestor_usuarios import mostrar_usuarios, eliminar_usuarios, otorgar_privilegios, quitar_privilegios
+from modules.gestor_usuarios import admin_check, registrar_administrador
 
 
 def menu_general(rol):
