@@ -11,19 +11,44 @@ def login():
 
     usuario = usuarios_db.get(nombre)
 
-    if usuario:
-        password_guardada_cifrada = usuario["contraseña"]
-        password_descifrada = descifrar_contraseña(password_guardada_cifrada)
+    password_descifrada = descifrar_contraseña(password)
 
-        if password == password_descifrada:
-            print(f"Éxito. Bienvenido, {nombre}.")
-            return True
-        else:
-            print("Usuario o contraseña incorrectos.")
-            return False
+    if usuario and usuario["contraseña"] == password_descifrada:
+        print(f"Exito. Bienvenido, {nombre}.")
+        return nombre
     else:
         print("Usuario o contraseña incorrectos.")
-        return False
+        return
+
+def registrar_usuario_standar():
+
+    print("Registro de usuario nuevo.")
+
+    while True:
+        nombre = input("Ingrese un nombre de usuario: ")
+        password = input("Ingrese la contraseña: ")
+        correo = input("Ingrese un correo electronico: ")
+
+        print(f"Los datos serán: \n"
+              f"Usuario: {nombre}\n"
+              f"Contraseña: {password}\n"
+              f"Correo: {correo}\n")
+        check = input("Confirme por favor: Si (Y) / No (X): ")
+
+        if check.upper() == "Y":
+             usuarios_db[nombre] = {
+                "contraseña": password,
+                "rol": "USUARIO",
+                "correo": correo
+            }
+             print("Usuario registrado con éxito.")
+             return
+        elif check.upper() == "X":
+
+            print("Reintentando registrar usuario...\n")
+        else:
+            print("Opción inválida. Solo se aceptan los valores (X) e (Y)\n")
+
 
 def registrar_administrador():
     print(
@@ -46,8 +71,8 @@ def registrar_administrador():
 
             usuarios_db[nombre] = {
                 "contraseña": password_cifrada,
-                "Rol": "ADMIN",
-                "Correo": correo
+                "rol": "ADMIN",
+                "correo": correo
             }
             print("Administrador registrado con éxito.\n")
             return
@@ -56,24 +81,56 @@ def registrar_administrador():
         else:
             print("Opción inválida. Solo se aceptan los valores (X) e (Y)\n")
 
-def guardar_usuarios():
-    with open("usuarios.json", "w") as f:
-        datos_serializables = {}
-        for usuario, info in usuarios_db.items():
-            datos_serializables[usuario] = {
-                "contraseña": info["contraseña"].decode(),  # bytes a texto
-                "Rol": info["Rol"],
-                "Correo": info["Correo"]
-            }
-        json.dump(datos_serializables, f)
+def mostrar_info_usuario(nombre_usuario):
+    usuario = usuarios_db.get(nombre_usuario)
 
-def cargar_usuarios():
-    if os.path.exists("usuarios.json"):
-        with open("usuarios.json", "r") as f:
-            datos = json.load(f)
-            for usuario, info in datos.items():
-                usuarios_db[usuario] = {
-                    "contraseña": info["contraseña"].encode(),  # texto a bytes
-                    "Rol": info["Rol"],
-                    "Correo": info["Correo"]
-                }
+    print("\n--- Información del Usuario ---\n"
+            f"Usuario: {nombre_usuario}\n"
+            f"Correo: {usuario.get('correo', 'No registrado')}\n")
+
+
+def mostrar_usuarios():
+    for key, value in usuarios_db.items():
+        print(f"Usuario:{key}")
+        for clave, valor in value.items():
+            print(f" {clave}:{valor}")
+        print()
+
+
+def recuperar_usuario():
+    mostrar_usuarios()
+    nombre = input("Indique el nombre del usuario que desea modificar: ").strip()
+    if nombre in usuarios_db:
+        return nombre
+    else:
+        print("No se encontró el usuario.")
+        return None
+
+
+def eliminar_usuarios():
+    print("Advertencia: esta es una accion destructiva irreversible.")
+    nombre = recuperar_usuario()
+    usuarios_db.pop(nombre)
+    print("Usuario eliminado.")
+
+
+def otorgar_privilegios():
+    print("Advertencia: se están modificando permisos de administrador.")
+    nombre = recuperar_usuario()
+    if nombre:
+        if usuarios_db[nombre]["Rol"] == "USUARIO":
+            usuarios_db[nombre]["Rol"] = "ADMIN_TEMP"
+            print(f"Rol de {nombre} actualizado a ADMIN_TEMP.")
+        else:
+            print("El usuario ya es administrador")
+
+
+def quitar_privilegios():
+    print("Advertencia: se están quitando permisos de administrador.")
+    nombre = recuperar_usuario()
+    if nombre:
+        if usuarios_db[nombre]["Rol"] == "ADMIN_TEMP":
+            usuarios_db[nombre]["Rol"] = "USUARIO"
+            print(f"Rol de {nombre} cambiado a USUARIO.")
+        else:
+            print(f"El usuario {nombre} no tiene rol ADMIN_TEMP.")
