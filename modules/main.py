@@ -10,7 +10,7 @@ def menu_general(rol):
     print("3: Buscar dispositivo por nombre")
     print("4: Automatizar dispositivo")
     print("5: Desactivar automatización")
-    print("6: Eliminar dispositivo")  # Siempre visible
+    print("6: Eliminar dispositivo")
     print("7: Mostrar automatizaciones")
     print("8: Mostrar información de usuario")
 
