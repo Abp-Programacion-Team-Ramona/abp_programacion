@@ -44,3 +44,4 @@ def registrar_administrador():
             print("Reintentando registrar administrador...\n")
         else:
             print("Opción inválida. Solo se aceptan los valores (X) e (Y)\n")
+
