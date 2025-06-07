@@ -2,28 +2,43 @@ from gestor_dispositivos import agregar_dispositivo, mostrar_dispositivos, busca
     automatizar_dispositivo, eliminar_automatizacion, eliminar_dispositivo, mostrar_automatizaciones
 
 
-def menu_usuario_estandar():
-    print("Opciones:\n"
-          "1: Ver informacion de usuario\n"
-          "2: Mostrar dispositivos\n"
-          "3: Buscar dispositivo por nombre\n"
-          "4: Automatizar dispositivo\n"
-          "5: Desactivar automatizacion\n"
-          "7: Salir")
+def menu_general(rol):
+    opciones = (
+        "\n===== MENÚ DEL SISTEMA =====\n"
+        "1: Agregar dispositivo\n"
+        "2: Mostrar dispositivos\n"
+        "3: Buscar dispositivo por nombre\n"
+        "4: Automatizar dispositivo\n"
+        "5: Desactivar automatización\n"
+        "6: Modificar automatización\n"
+        "7: Eliminar dispositivo\n"
+        "8: Mostrar automatizaciones\n"
+    )
+    if rol == "admin":
+        opciones += (
+            "9: Mostrar usuarios\n"
+            "10: Eliminar usuario\n"
+            "11: Otorgar privilegios\n"
+            "12: Quitar privilegios\n"
+            "13: Salir\n"
+        )
+    else:
+        opciones += "9: Salir\n"
+
+    print(opciones)
 
 
-aplicacion_ejecutando = True
+def iniciar_aplicacion(rol):
+    while True:
+        menu_general(rol)
+        opcion = input("Seleccione una opción: ").strip()
 
-while aplicacion_ejecutando:
+        if not opcion.isdigit():
+            print("Ingrese un número válido.")
+            continue
 
-    print("\n")
-    menu_usuario_estandar()
-    print("\n")
-
-    opcion = input("Elija una opcion:")
-
-    if opcion.isdigit():
         opcion = int(opcion)
+
         match opcion:
             case 1:
                 agregar_dispositivo()
@@ -39,10 +54,23 @@ while aplicacion_ejecutando:
                 eliminar_dispositivo()
             case 7:
                 mostrar_automatizaciones()
-            case 8:
-                print("Cerrando aplicacion.")
-                aplicacion_ejecutando = False
+            case 9 if rol == "admin":
+                # mostrar_usuarios()
+                print("implementar")
+            case 10 if rol == "admin":
+                # eliminar_usuarios()
+                print("implementar")
+            case 11 if rol == "admin":
+                print("implementar")
+            # otorgar_privilegios()
+            case 12 if rol == "admin":
+                print("implementar")
+            # quitar_privilegios()
+            case 13 if rol == "admin":
+                print("Cerrando sesión de administrador.")
+                break
+            case 9 if rol == "usuario":
+                print("Cerrando sesión de usuario estándar.")
+                break
             case _:
-                print("Opcion invalida.")
-    else:
-        print("Solo se admiten valores numericos")
+                print("Opción inválida.")
