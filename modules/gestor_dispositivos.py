@@ -16,7 +16,11 @@ def automatizar_dispositivo():
         "Seleccione una opción: "
     )
 
-    nombre_rutina = input("Indique el identificador de la rutina:")
+    nombre_rutina = input("Indique el nombre de la rutina:").upper()
+
+    if nombre_rutina in automatizaciones:
+        print("Ya existe una automatización con ese nombre de rutina. Use otro.")
+        return
 
     if tipo_input.isdigit():
         tipo = int(tipo_input)
@@ -135,8 +139,8 @@ def automatizar_aire_acondicionado(nombre_rutina):
         modo_input = int(input())
         if modo_input < 0 or modo_input > 4:
             while modo_input < 0 or modo_input > 4:
-                print("Opcion invalida")
-                print("Ingrese el modo de aire acondicionado: ((1) VENTILADOR,(2) FRIO, (3) CALOR, (4) HUMEDAD ) ")
+                print("Opcion invalida\n"
+                      "Ingrese el modo de aire acondicionado: ((1) VENTILADOR,(2) FRIO, (3) CALOR, (4) HUMEDAD ) ")
         if modo_input == 1:
             modo = "VENTILADOR"
         elif modo_input == 2:
@@ -165,6 +169,13 @@ def automatizar_aire_acondicionado(nombre_rutina):
     }
 
     return True
+
+
+def check_dispositivo_ya_automatizado(nombre_dispositivo):
+    for datos in automatizaciones.values():
+        if datos["Dispositivo"] == nombre_dispositivo:
+            print(f"El dispositivo '{nombre_dispositivo}' ya está automatizado. No se permite duplicar.")
+            return
 
 
 def automatizar_ventilador(nombre_rutina):
@@ -301,16 +312,30 @@ def buscar_dispositivo_por_identificador():
     if dispositivo:
         nombre_dispositivo = dispositivo["Nombre"]
         print(f"Dispositivo seleccionado: {nombre_dispositivo}")
-        return nombre_dispositivo
+        if check_dispositivo_ya_automatizado(nombre_dispositivo):
+            print("El dispositivo tiene un automatizacion. Debe eliminarla primero")
+        else:
+            return nombre_dispositivo
     else:
         print("No existe un dispositivo con ese número.")
-        return False
+        return
 
 
 def mostrar_dispositivos_por_tipo(tipo):
     for id_disp, disp in dispositivos.items():
         if disp['Tipo'] == str.upper(tipo):
             print(f"Identificador del dispositivo: {id_disp}. Nombre:{disp['Nombre']}.")
+
+
+def mostrar_automatizaciones():
+    if not automatizaciones:
+        print("No hay automatizaciones creadas.")
+        return
+
+    for nombre_rutina, datos in automatizaciones.items():
+        print(f"Nombre de la rutina: {nombre_rutina}")
+        for clave, valor in datos.items():
+            print(f"  {clave}: {valor}")
 
 
 def check_dispositivos_por_tipo(tipo):
@@ -329,17 +354,6 @@ def eliminar_dispositivo():
         automatizaciones.pop(identificador)
     else:
         print("Valor invalido.")
-
-
-def mostrar_automatizaciones():
-    if not automatizaciones:
-        print("No hay automatizaciones creadas.")
-        return
-
-    for nombre_rutina, datos in automatizaciones.items():
-        print(f"Nombre de la rutina: {nombre_rutina}")
-        for clave, valor in datos.items():
-            print(f"  {clave}: {valor}")
 
 
 def eliminar_automatizacion():

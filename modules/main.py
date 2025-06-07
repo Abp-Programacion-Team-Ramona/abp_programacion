@@ -1,6 +1,8 @@
 from gestor_dispositivos import agregar_dispositivo, mostrar_dispositivos, buscar_dispositivo_por_nombre, \
     automatizar_dispositivo, eliminar_automatizacion, eliminar_dispositivo, mostrar_automatizaciones
 
+from gestor_usuarios import mostrar_usuarios, eliminar_usuarios, otorgar_privilegios, quitar_privilegios
+
 
 def menu_general(rol):
     opciones = (
@@ -10,20 +12,19 @@ def menu_general(rol):
         "3: Buscar dispositivo por nombre\n"
         "4: Automatizar dispositivo\n"
         "5: Desactivar automatización\n"
-        "6: Modificar automatización\n"
-        "7: Eliminar dispositivo\n"
-        "8: Mostrar automatizaciones\n"
+        "6: Eliminar dispositivo\n"
+        "7: Mostrar automatizaciones\n"
     )
     if rol == "admin":
         opciones += (
-            "9: Mostrar usuarios\n"
-            "10: Eliminar usuario\n"
-            "11: Otorgar privilegios\n"
-            "12: Quitar privilegios\n"
-            "13: Salir\n"
+            "8: Mostrar usuarios\n"
+            "9: Eliminar usuario\n"
+            "10: Otorgar privilegios\n"
+            "11: Quitar privilegios\n"
+            "12: Salir\n"
         )
     else:
-        opciones += "9: Salir\n"
+        opciones += "8: Salir\n"
 
     print(opciones)
 
@@ -54,22 +55,18 @@ def iniciar_aplicacion(rol):
                 eliminar_dispositivo()
             case 7:
                 mostrar_automatizaciones()
+            case 8 if rol == "admin":
+                mostrar_usuarios()
             case 9 if rol == "admin":
-                # mostrar_usuarios()
-                print("implementar")
+                eliminar_usuarios()
             case 10 if rol == "admin":
-                # eliminar_usuarios()
-                print("implementar")
+                otorgar_privilegios()
             case 11 if rol == "admin":
-                print("implementar")
-            # otorgar_privilegios()
+                quitar_privilegios()
             case 12 if rol == "admin":
-                print("implementar")
-            # quitar_privilegios()
-            case 13 if rol == "admin":
                 print("Cerrando sesión de administrador.")
                 break
-            case 9 if rol == "usuario":
+            case 8 if rol == "usuario":
                 print("Cerrando sesión de usuario estándar.")
                 break
             case _:
