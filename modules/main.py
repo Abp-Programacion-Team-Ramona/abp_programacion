@@ -14,7 +14,7 @@ def menu_general(rol):
     print("7: Mostrar automatizaciones")
     print("8: Mostrar información de usuario")
 
-    if rol == "ADMIN":
+    if rol == "ADMIN" or rol == "ADMIN_TEMP":
         print("9: Mostrar todos los usuarios")
         print("10: Eliminar usuario")
         print("11: Otorgar privilegios")
