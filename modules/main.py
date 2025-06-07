@@ -1,86 +1,76 @@
-from gestor_dispositivos import (agregar_dispositivo, mostrar_dispositivos, buscar_dispositivo_por_nombre, \
-    automatizar_dispositivo, eliminar_automatizacion, eliminar_dispositivo, mostrar_automatizaciones)
+from gestor_dispositivos import agregar_dispositivo, mostrar_dispositivos, buscar_dispositivo_por_nombre, \
+    automatizar_dispositivo, eliminar_automatizacion, eliminar_dispositivo, mostrar_automatizaciones
 
-from gestor_usuarios import (login, registrar_administrador, registrar_usuario_standar,mostrar_info_usuario, usuarios_db)
 
-def menu_principal():
+def menu_general(rol):
+    opciones = (
+        "\n===== MENÚ DEL SISTEMA =====\n"
+        "1: Agregar dispositivo\n"
+        "2: Mostrar dispositivos\n"
+        "3: Buscar dispositivo por nombre\n"
+        "4: Automatizar dispositivo\n"
+        "5: Desactivar automatización\n"
+        "6: Modificar automatización\n"
+        "7: Eliminar dispositivo\n"
+        "8: Mostrar automatizaciones\n"
+    )
+    if rol == "admin":
+        opciones += (
+            "9: Mostrar usuarios\n"
+            "10: Eliminar usuario\n"
+            "11: Otorgar privilegios\n"
+            "12: Quitar privilegios\n"
+            "13: Salir\n"
+        )
+    else:
+        opciones += "9: Salir\n"
+
+    print(opciones)
+
+
+def iniciar_aplicacion(rol):
     while True:
-        print("--- Menú Principal ---\n")
-        print("Opciones:\n" 
-              "1: Iniciar sesión\n"
-              "2: Registrar usuario\n"
-              "3: Salir\n")
-        opciones = input("Elija una opción: ")
+        menu_general(rol)
+        opcion = input("Seleccione una opción: ").strip()
 
-        if opciones.isdigit():
-            opciones = int(opciones)
+        if not opcion.isdigit():
+            print("Ingrese un número válido.")
+            continue
 
-            match opciones:
-                case 1:
-                    usuario = login()
-                    if usuario:
-                        rol = usuarios_db[usuario]["rol"]
-                        if rol == "ADMIN":
-                           # menu_administrador(usuario)
-                            print("Implementando")
-                        else:
-                            menu_usuario_estandar(usuario)
-                case 2:
-                    registrar_usuario_standar()
-                case 3:
-                    print("Saliendo...")
-                    break
-                case _:
-                    print("Opción inválida")
-        else:
-            print("Solo se admiten números.")
+        opcion = int(opcion)
 
-
-
-def menu_usuario_estandar(usuario):
-
-    aplicacion_ejecutando = True
-
-    while aplicacion_ejecutando:
-
-        print("--- Menú de Usuario ---")
-        print("Opciones:\n"
-          "1: Ver informacion de usuario\n"
-          "2: Mostrar dispositivos\n"
-          "3: Buscar dispositivo por nombre\n"
-          "4: Automatizar dispositivo\n"
-          "5: Modificar automatizacion"
-          "6: Eliminar automatizacion\n"
-          "7: Salir\n")
-
-        opcion = input("Elija una opcion:")
-
-        if opcion.isdigit():
-            opcion = int(opcion)
-            match opcion:
-                case 1:
-                    mostrar_info_usuario(usuario)
-                case 2:
-                    mostrar_dispositivos()
-                case 3:
-                    buscar_dispositivo_por_nombre()
-                case 4:
-                    automatizar_dispositivo()
-                case 5:
-                    #modificar_automatizacion()
-                    print("implementar")
-                case 6:
-                    eliminar_automatizacion()
-                case 7:
-                    print("Cerrando aplicacion.")
-                    aplicacion_ejecutando = False
-                case _:
-                    print("Opcion invalida.")
-        else:
-            print("Solo se admiten valores numericos")
-
-
-
-print("\n")
-menu_principal()
-print("\n")
+        match opcion:
+            case 1:
+                agregar_dispositivo()
+            case 2:
+                mostrar_dispositivos()
+            case 3:
+                buscar_dispositivo_por_nombre()
+            case 4:
+                automatizar_dispositivo()
+            case 5:
+                eliminar_automatizacion()
+            case 6:
+                eliminar_dispositivo()
+            case 7:
+                mostrar_automatizaciones()
+            case 9 if rol == "admin":
+                # mostrar_usuarios()
+                print("implementar")
+            case 10 if rol == "admin":
+                # eliminar_usuarios()
+                print("implementar")
+            case 11 if rol == "admin":
+                print("implementar")
+            # otorgar_privilegios()
+            case 12 if rol == "admin":
+                print("implementar")
+            # quitar_privilegios()
+            case 13 if rol == "admin":
+                print("Cerrando sesión de administrador.")
+                break
+            case 9 if rol == "usuario":
+                print("Cerrando sesión de usuario estándar.")
+                break
+            case _:
+                print("Opción inválida.")
