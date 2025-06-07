@@ -1,4 +1,4 @@
-from cifrador import cifrar_contraseña, descifrar_contraseña
+from modules.cifrador import cifrar_contraseña, descifrar_contraseña
 import json
 
 import os

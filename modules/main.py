@@ -1,5 +1,4 @@
-from gestor_usuarios import registrar_administrador, login, guardar_usuarios, cargar_usuarios, usuarios_db
-from cifrador import cifrar_contraseña, descifrar_contraseña
+from gestor_usuarios import registrar_administrador, guardar_usuarios, cargar_usuarios, usuarios_db
 from gestor_dispositivos import agregar_dispositivo, mostrar_dispositivos, buscar_dispositivo_por_nombre, \
     automatizar_dispositivo, eliminar_automatizacion, eliminar_dispositivo, mostrar_automatizaciones
 
