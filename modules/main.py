@@ -2,8 +2,6 @@ from gestor_dispositivos import agregar_dispositivo, mostrar_dispositivos, busca
     automatizar_dispositivo, eliminar_automatizacion, eliminar_dispositivo, mostrar_automatizaciones
 
 
-
-
 def menu_general(rol):
     opciones = (
         "\n===== MENÚ DEL SISTEMA =====\n"
@@ -29,7 +27,8 @@ def menu_general(rol):
 
     print(opciones)
 
-def ejecutar_menu_general(rol):
+
+def iniciar_aplicacion(rol):
     while True:
         menu_general(rol)
         opcion = input("Seleccione una opción: ").strip()
@@ -52,19 +51,21 @@ def ejecutar_menu_general(rol):
             case 5:
                 eliminar_automatizacion()
             case 6:
-                modificar_automatizacion()
-            case 7:
                 eliminar_dispositivo()
-            case 8:
+            case 7:
                 mostrar_automatizaciones()
             case 9 if rol == "admin":
-                mostrar_usuarios()
+                # mostrar_usuarios()
+                print("implementar")
             case 10 if rol == "admin":
-                eliminar_usuarios()
+                # eliminar_usuarios()
+                print("implementar")
             case 11 if rol == "admin":
-                otorgar_privilegios()
+                print("implementar")
+            # otorgar_privilegios()
             case 12 if rol == "admin":
-                quitar_privilegios()
+                print("implementar")
+            # quitar_privilegios()
             case 13 if rol == "admin":
                 print("Cerrando sesión de administrador.")
                 break
@@ -73,11 +74,3 @@ def ejecutar_menu_general(rol):
                 break
             case _:
                 print("Opción inválida.")
-
-print("Bienvenido al sistema de gestión de dispositivos.")
-usuario_logueado = login()
-
-if usuario_logueado:
-    ejecutar_menu_general(usuario_logueado["rol"])
-else:
-    print("No se pudo iniciar sesión.")
