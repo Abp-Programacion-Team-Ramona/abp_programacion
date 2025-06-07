@@ -1,8 +1,8 @@
-from gestor_usuarios import registrar_administrador, guardar_usuarios, cargar_usuarios, usuarios_db
 from gestor_dispositivos import agregar_dispositivo, mostrar_dispositivos, buscar_dispositivo_por_nombre, \
     automatizar_dispositivo, eliminar_automatizacion, eliminar_dispositivo, mostrar_automatizaciones
 
 from gestor_usuarios import mostrar_usuarios, eliminar_usuarios, otorgar_privilegios, quitar_privilegios
+from modules.gestor_usuarios import admin_check, registrar_administrador
 
 
 def menu_general(rol):

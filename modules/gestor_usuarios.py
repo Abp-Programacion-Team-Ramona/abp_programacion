@@ -1,9 +1,8 @@
 from modules.cifrador import cifrar_contraseña, descifrar_contraseña
-import json
-
-import os
 
 usuarios_db = {}
+
+
 def login():
     print("Iniciando sesion...\n")
     nombre = input("Usuario: ")
@@ -11,17 +10,19 @@ def login():
 
     usuario = usuarios_db.get(nombre)
 
-    password_descifrada = descifrar_contraseña(password)
-
-    if usuario and usuario["contraseña"] == password_descifrada:
+    if usuario and descifrar_contraseña(usuario["contraseña"]) == password:
         print(f"Exito. Bienvenido, {nombre}.")
         return nombre
     else:
         print("Usuario o contraseña incorrectos.")
         return
 
-def registrar_usuario_standar():
 
+def admin_check():
+    return len(usuarios_db) > 0
+
+
+def registrar_usuario_standar():
     print("Registro de usuario nuevo.")
 
     while True:
@@ -36,13 +37,13 @@ def registrar_usuario_standar():
         check = input("Confirme por favor: Si (Y) / No (X): ")
 
         if check.upper() == "Y":
-             usuarios_db[nombre] = {
-                "contraseña": password,
+            usuarios_db[nombre] = {
+                "contraseña": cifrar_contraseña(password),
                 "rol": "USUARIO",
                 "correo": correo
             }
-             print("Usuario registrado con éxito.")
-             return
+            print("Usuario registrado con éxito.")
+            return
         elif check.upper() == "X":
 
             print("Reintentando registrar usuario...\n")
@@ -81,12 +82,13 @@ def registrar_administrador():
         else:
             print("Opción inválida. Solo se aceptan los valores (X) e (Y)\n")
 
+
 def mostrar_info_usuario(nombre_usuario):
     usuario = usuarios_db.get(nombre_usuario)
 
     print("\n--- Información del Usuario ---\n"
-            f"Usuario: {nombre_usuario}\n"
-            f"Correo: {usuario.get('correo', 'No registrado')}\n")
+          f"Usuario: {nombre_usuario}\n"
+          f"Correo: {usuario.get('correo', 'No registrado')}\n")
 
 
 def mostrar_usuarios():
