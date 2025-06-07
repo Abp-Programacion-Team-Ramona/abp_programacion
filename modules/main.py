@@ -11,17 +11,18 @@ def menu_principal():
               "2: Registrar usuario\n"
               "3: Salir\n")
         opciones = input("Elija una opción: ")
-        
+
         if opciones.isdigit():
             opciones = int(opciones)
 
             match opciones:
                 case 1:
-                    usuario = login()  
+                    usuario = login()
                     if usuario:
                         rol = usuarios_db[usuario]["rol"]
                         if rol == "ADMIN":
-                            menu_administrador(usuario)
+                           # menu_administrador(usuario)
+                            print("Implementando")
                         else:
                             menu_usuario_estandar(usuario)
                 case 2:
@@ -37,7 +38,7 @@ def menu_principal():
 
 
 def menu_usuario_estandar(usuario):
-    
+
     aplicacion_ejecutando = True
 
     while aplicacion_ejecutando:
@@ -58,7 +59,7 @@ def menu_usuario_estandar(usuario):
             opcion = int(opcion)
             match opcion:
                 case 1:
-                    mostrar_info_usuario(usuario) #mostrar la info del usuario
+                    mostrar_info_usuario(usuario)
                 case 2:
                     mostrar_dispositivos()
                 case 3:
@@ -66,12 +67,12 @@ def menu_usuario_estandar(usuario):
                 case 4:
                     automatizar_dispositivo()
                 case 5:
-                    #modificar_automatizacion() 
+                    #modificar_automatizacion()
                     print("implementar")
                 case 6:
-                    eliminar_automatizacion() #hasta aca el menú de usuario
+                    eliminar_automatizacion()
                 case 7:
-                    print("Cerrando aplicacion.")#salir
+                    print("Cerrando aplicacion.")
                     aplicacion_ejecutando = False
                 case _:
                     print("Opcion invalida.")
