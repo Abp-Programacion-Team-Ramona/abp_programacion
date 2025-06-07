@@ -1,14 +1,8 @@
 from gestor_dispositivos import agregar_dispositivo, mostrar_dispositivos, buscar_dispositivo_por_nombre, \
-    automatizar_dispositivo, eliminar_automatizacion, modificar_automatizacion, eliminar_dispositivo, mostrar_automatizaciones
+    automatizar_dispositivo, eliminar_automatizacion, eliminar_dispositivo, mostrar_automatizaciones
 
-from gestor_usuarios import mostrar_usuarios, eliminar_usuarios, otorgar_privilegios, quitar_privilegios
 
-def login():
-    print("Inicio de sesión")
-    usuario = input("Usuario: ").strip()
-    contraseña = input("Contraseña: ").strip()
 
-    
 
 def menu_general(rol):
     opciones = (
