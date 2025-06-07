@@ -1,36 +1,33 @@
-from gestor_dispositivos import agregar_dispositivo, mostrar_dispositivos, buscar_dispositivo_por_nombre, \
-    automatizar_dispositivo, eliminar_automatizacion, eliminar_dispositivo, mostrar_automatizaciones
-
-from gestor_usuarios import mostrar_usuarios, eliminar_usuarios, otorgar_privilegios, quitar_privilegios
-from modules.gestor_usuarios import admin_check, registrar_administrador
+import gestor_dispositivos
+import gestor_usuarios
+import gestor_vivienda
 
 
 def menu_general(rol):
-    opciones = (
-        "\n===== MENÚ DEL SISTEMA =====\n"
-        "1: Agregar dispositivo\n"
-        "2: Mostrar dispositivos\n"
-        "3: Buscar dispositivo por nombre\n"
-        "4: Automatizar dispositivo\n"
-        "5: Desactivar automatización\n"
-        "6: Eliminar dispositivo\n"
-        "7: Mostrar automatizaciones\n"
-    )
-    if rol == "admin":
-        opciones += (
-            "8: Mostrar usuarios\n"
-            "9: Eliminar usuario\n"
-            "10: Otorgar privilegios\n"
-            "11: Quitar privilegios\n"
-            "12: Salir\n"
-        )
-    else:
-        opciones += "8: Salir\n"
+    print("\n===== MENÚ DEL SISTEMA =====")
+    print("1: Agregar dispositivo")
+    print("2: Mostrar dispositivos")
+    print("3: Buscar dispositivo por nombre")
+    print("4: Automatizar dispositivo")
+    print("5: Desactivar automatización")
+    print("6: Eliminar dispositivo")  # Siempre visible
+    print("7: Mostrar automatizaciones")
+    print("8: Mostrar información de usuario")
 
-    print(opciones)
+    if rol == "ADMIN":
+        print("9: Mostrar todos los usuarios")
+        print("10: Eliminar usuario")
+        print("11: Otorgar privilegios")
+        print("12: Quitar privilegios")
+        print("13: Registrar vivienda")
+        print("14: Mostrar información de vivienda")
+        print("15: Eliminar vivienda")
+        print("16: Mostrar dispositivos de la vivienda")
+
+    print("0: Cerrar sesión")
 
 
-def iniciar_aplicacion(rol):
+def iniciar_aplicacion(rol, nombre):
     while True:
         menu_general(rol)
         opcion = input("Seleccione una opción: ").strip()
@@ -43,32 +40,71 @@ def iniciar_aplicacion(rol):
 
         match opcion:
             case 1:
-                agregar_dispositivo()
+                gestor_dispositivos.agregar_dispositivo()
             case 2:
-                mostrar_dispositivos()
+                gestor_dispositivos.mostrar_dispositivos()
             case 3:
-                buscar_dispositivo_por_nombre()
+                gestor_dispositivos.buscar_dispositivo_por_nombre()
             case 4:
-                automatizar_dispositivo()
+                gestor_dispositivos.automatizar_dispositivo()
             case 5:
-                eliminar_automatizacion()
+                gestor_dispositivos.eliminar_automatizacion()
             case 6:
-                eliminar_dispositivo()
+                if rol == "ADMIN" or "ADMIN_TEMP":
+                    gestor_dispositivos.eliminar_dispositivo()
+                else:
+                    print("Acceso denegado: solo administradores pueden eliminar dispositivos.")
             case 7:
-                mostrar_automatizaciones()
-            case 8 if rol == "admin":
-                mostrar_usuarios()
-            case 9 if rol == "admin":
-                eliminar_usuarios()
-            case 10 if rol == "admin":
-                otorgar_privilegios()
-            case 11 if rol == "admin":
-                quitar_privilegios()
-            case 12 if rol == "admin":
-                print("Cerrando sesión de administrador.")
-                break
-            case 8 if rol == "usuario":
-                print("Cerrando sesión de usuario estándar.")
+                gestor_dispositivos.mostrar_automatizaciones()
+            case 8:
+                gestor_usuarios.mostrar_info_usuario(nombre)
+            case 9 if rol == "ADMIN" or "ADMIN_TEMP":
+                gestor_usuarios.mostrar_usuarios()
+            case 10 if rol == "ADMIN" or "ADMIN_TEMP":
+                gestor_usuarios.eliminar_usuarios()
+            case 11 if rol == "ADMIN" or "ADMIN_TEMP":
+                gestor_usuarios.otorgar_privilegios()
+            case 12 if rol == "ADMIN" or "ADMIN_TEMP":
+                gestor_usuarios.quitar_privilegios()
+            case 13 if rol == "ADMIN" or "ADMIN_TEMP":
+                gestor_vivienda.registrar_vivienda()
+            case 14 if rol == "ADMIN" or "ADMIN_TEMP":
+                gestor_vivienda.mostrar_vivienda()
+            case 15 if rol == "ADMIN" or "ADMIN_TEMP":
+                gestor_vivienda.eliminar_vivienda()
+            case 16 if rol == "ADMIN" or "ADMIN_TEMP":
+                gestor_vivienda.mostrar_dispositivo_vivienda()
+            case 0:
+                print(f"Cerrando sesión de {nombre}.")
                 break
             case _:
                 print("Opción inválida.")
+
+
+if __name__ == "__main__":
+    while True:
+        if not gestor_usuarios.admin_check():
+            # gestor_usuarios.simular_usuario()
+            gestor_usuarios.registrar_administrador()
+
+        print("\n===== BIENVENIDO =====")
+        print("1: Registrar usuario")
+        print("2: Acceder")
+        print("0: Salir")
+
+        opcion = input("Seleccione una opción: ").strip()
+
+        if opcion == "1":
+            gestor_usuarios.registrar_usuario_standar()
+        elif opcion == "2":
+            nombre = input("Usuario: ").strip()
+            rol = gestor_usuarios.login(nombre)
+            if rol:
+                iniciar_aplicacion(rol, nombre)
+            else:
+                print("Datos inválidos.")
+        elif opcion == "0":
+            print("Saliendo del sistema...")
+            break
+        else:
+            print("Opción inválida. Intente de nuevo.")

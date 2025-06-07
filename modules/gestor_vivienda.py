@@ -1,6 +1,6 @@
 from gestor_dispositivos import mostrar_dispositivos
 
-vivienda = {}
+viviendas_db = {}
 
 def registrar_vivienda():
     while True:
@@ -35,23 +35,23 @@ def registrar_vivienda():
                 "Nombre": str.upper(nombre),
                 "Tipo": tipo_vivienda
             }
-            vivienda[len(vivienda) + 1] = vivienda_data
+            viviendas_db[len(viviendas_db) + 1] = vivienda_data
             break
     print(f"La vivienda {nombre} fue registrada correctamente.")
 
 
 def check_vivienda_existe_por_nombre(nombre):
-    for disp in vivienda.values():
+    for disp in viviendas_db.values():
         if disp["Nombre"] == str.upper(nombre):
             return True
     return False
 
 
 def mostrar_vivienda():
-    if len(vivienda) == 0:
+    if len(viviendas_db) == 0:
         print("No hay vivienda registradas")
         return
-    for id_disp, disp in vivienda.items():
+    for id_disp, disp in viviendas_db.items():
         print(f"Identificador de la vivienda: {id_disp}.")
         for clave, valor in disp.items():
             print(f"  {clave}: {valor}")
@@ -59,7 +59,7 @@ def mostrar_vivienda():
 
 
 def eliminar_vivienda():
-    if len(vivienda) == 0:
+    if len(viviendas_db) == 0:
         print("No hay viviendas registradas")
         return
     mostrar_vivienda()
@@ -67,8 +67,8 @@ def eliminar_vivienda():
         identificador_input = input("Ingrese el Identificador de vivienda: ")
         if identificador_input.isdigit():
             identificador = int(identificador_input)
-            if identificador in vivienda:
-                vivienda_eliminada = vivienda.pop(identificador)
+            if identificador in viviendas_db:
+                vivienda_eliminada = viviendas_db.pop(identificador)
                 print(f"La vivienda '{vivienda_eliminada['Nombre']}' fue eliminada correctamente.")
                 break
             else:
@@ -78,7 +78,7 @@ def eliminar_vivienda():
 
 
 def mostrar_dispositivo_vivienda():
-    if len(vivienda) == 0:
+    if len(viviendas_db) == 0:
         print("No hay viviendas registradas")
         return
     print("Viviendas disponibles:")
@@ -87,8 +87,8 @@ def mostrar_dispositivo_vivienda():
         identificador_input = input("Ingrese el Identificador de la vivienda para ver sus dispositivos: ")
         if identificador_input.isdigit():
             identificador = int(identificador_input)
-            if identificador in vivienda:
-                vivienda_seleccionada = vivienda[identificador]
+            if identificador in viviendas_db:
+                vivienda_seleccionada = viviendas_db[identificador]
                 print(f"\n Dispositivos de {vivienda_seleccionada['Nombre']} ")
                 mostrar_dispositivos()
                 break

@@ -175,7 +175,8 @@ def check_dispositivo_ya_automatizado(nombre_dispositivo):
     for datos in automatizaciones.values():
         if datos["Dispositivo"] == nombre_dispositivo:
             print(f"El dispositivo '{nombre_dispositivo}' ya está automatizado. No se permite duplicar.")
-            return
+            return True
+    return False
 
 
 def automatizar_ventilador(nombre_rutina):
@@ -314,6 +315,7 @@ def buscar_dispositivo_por_identificador():
         print(f"Dispositivo seleccionado: {nombre_dispositivo}")
         if check_dispositivo_ya_automatizado(nombre_dispositivo):
             print("El dispositivo tiene un automatizacion. Debe eliminarla primero")
+            return
         else:
             return nombre_dispositivo
     else:
@@ -358,7 +360,7 @@ def eliminar_dispositivo():
 
 def eliminar_automatizacion():
     mostrar_automatizaciones()
-    nombre = input("Indique el nombre de la automatizacion que desea eliminar")
+    nombre = input("Indique el nombre de la automatizacion que desea eliminar: ")
     if nombre in automatizaciones:
         automatizaciones.pop(nombre)
         print(f"Automatización '{nombre}' eliminada.")
