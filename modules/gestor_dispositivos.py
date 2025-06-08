@@ -349,13 +349,20 @@ def check_dispositivos_por_tipo(tipo):
 
 def eliminar_dispositivo():
     mostrar_dispositivos()
-    identificador = int(input("Ingrese el Identificador del dispositivo: "))
-    if not identificador > len(dispositivos) or identificador <= 0:
-        dispositivo = dispositivos.pop(identificador)
-        print(f"El dispositivo '{dispositivo['Nombre']}' y su rutina fueron eliminados correctamente.")
-        automatizaciones.pop(identificador)
+    if len(dispositivos) > 0:
+        entrada = input("Ingrese el Identificador del dispositivo: ")
+        if not entrada.isdigit():
+            print("Entrada inválida. Debe ingresar un número.")
+            return
+
+        identificador = int(entrada)
+        if identificador in dispositivos:
+            dispositivo = dispositivos.pop(identificador)
+            print(f"El dispositivo '{dispositivo['Nombre']}'")
+        else:
+            print("Identificador inválido. No existe un dispositivo con ese ID.")
     else:
-        print("Valor invalido.")
+        print("No hay dispositivos.")
 
 
 def eliminar_automatizacion():
