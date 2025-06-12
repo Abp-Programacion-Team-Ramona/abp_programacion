@@ -1,4 +1,4 @@
-from modules.cifrador import cifrar_contraseña, descifrar_contraseña
+from cifrador import cifrar_contraseña, descifrar_contraseña
 
 usuarios_db = {}
 
